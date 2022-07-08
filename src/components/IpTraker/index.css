@@ -5,9 +5,27 @@
   border-radius: 10px;
 }
 
-.ant-row {
-  display: flex;
-  flex-flow: row !important;
+@media screen and (max-width: 6000px) {
+  div.ant-row {
+    display: flex;
+    flex-flow: row !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  div.ant-row {
+    font-size: 10px;
+    flex-wrap: wrap !important;
+    width: fit-content;
+    align-items: center !important;
+    justify-content: space-around !important;
+  }
+  .ant-col-8 {
+    display: flex !important;
+    flex-direction: column;
+    flex-wrap: wrap !important;
+    width: min-content !important;
+  }
 }
 
 .ant-input {

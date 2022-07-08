@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Input, Card, Col, Row } from "antd";
 import "./index.css";
 import { getIp } from "../../services/requests";
@@ -11,15 +11,32 @@ import {
   DivHeaders,
   DivTitulo,
 } from "../../styles/styles";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  useMap,
+  useMapEvent,
+  useMapEvents,
+} from "react-leaflet";
+import { LatLngExpression } from "leaflet";
 
 const { Search } = Input;
 
 function IpTraker() {
+  // const map = useMap();
+  const animateRef = useRef(false);
+
   const [country, setCountry] = useState<string>();
   const [city, setCity] = useState<string>();
   const [isp, setIsp] = useState<string>();
   const [region, setRegion] = useState<string>();
+  const [coordinates, setCoordinates] = useState<LatLngExpression>([
+    37.38605, -122.08385,
+  ]);
+  // const maps = useMap();
+  // console.log("map center:", map.getCenter());
 
   const [timeZone, setTimeZone] = useState<string>();
 
@@ -28,17 +45,30 @@ function IpTraker() {
   const requestApiIp = async (): Promise<void> => {
     try {
       const numeroIp = await getIp(ip);
-      console.log(numeroIp?.isp);
+      console.log(numeroIp);
       setRegion(numeroIp?.location.region);
       setCountry(numeroIp?.location.country);
       setCity(numeroIp?.location.city);
       setIsp(numeroIp?.isp);
       setTimeZone(`UTC${numeroIp?.location.timezone}`);
       setIp(numeroIp?.ip);
+      setCoordinates([
+        parseFloat(numeroIp?.location.lat),
+        parseFloat(numeroIp?.location.lng),
+      ]);
     } catch (erro: any) {
       console.log(erro);
     }
   };
+  function SetViewOnClick({ animateRef }: any) {
+    const map = useMapEvent("click", (e) => {
+      map.setView(coordinates, map.getZoom(), {
+        animate: animateRef.current || false,
+      });
+    });
+
+    return null;
+  }
 
   return (
     <div style={{ position: "absolute" }}>
@@ -62,7 +92,7 @@ function IpTraker() {
       <DivContainerBox>
         <DivBox>
           <div className="site-card-border-less-wrapper">
-            <Card bordered={false} >
+            <Card bordered={false}>
               <Row
                 style={{
                   justifyContent: "space-around",
@@ -97,15 +127,16 @@ function IpTraker() {
       <DivContainerMap>
         <MapContainer
           id="map"
-          center={[51.505, -0.09]}
+          center={coordinates}
           zoom={13}
-          scrollWheelZoom={false}
+          scrollWheelZoom={true}
         >
+          <SetViewOnClick animateRef={animateRef} />
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <Marker position={[51.505, -0.09]}>
+          <Marker position={coordinates}>
             <Popup>
               A pretty CSS3 popup. <br /> Easily customizable.
             </Popup>
