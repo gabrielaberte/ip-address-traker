@@ -1,0 +1,31 @@
+.site-card-border-less-wrapper {
+  display: flex;
+  justify-content: center;
+  box-shadow: 0 0 1em black;
+  border-radius: 10px;
+}
+
+.ant-row {
+  display: flex;
+  flex-flow: row !important;
+}
+
+.ant-input {
+  font-size: 20px;
+  padding: 20px;
+  width: 100%;
+  outline: none;
+  border: none;
+  border-radius: 20px 0 0 20px;
+}
+
+.ant-input-search-button {
+  background-color: black !important;
+  border-top-right-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+
+#map {
+  height: 80vh;
+  position: relative;
+}
