@@ -78,7 +78,7 @@ function IpTraker() {
             <Search
               placeholder="Search for an IP address or domain"
               onChange={(e: any) => setIp(e.target.value)}
-              enterButton={<svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"><path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"/></svg>}
+              enterButton={<svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"><path fill="none" stroke="#FFF" strokeWidth="3" d="M2 1l6 6-6 6"/></svg>}
               onSearch={() => requestApiIp()}
               style={{}}
             />
