@@ -16,27 +16,21 @@ import {
   Marker,
   Popup,
   TileLayer,
-  useMap,
   useMapEvent,
-  useMapEvents,
 } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
+import icon from '../../assets/icon-arrow.svg'
 
 const { Search } = Input;
 
 function IpTraker() {
-  // const map = useMap();
   const animateRef = useRef(false);
 
   const [country, setCountry] = useState<string>();
   const [city, setCity] = useState<string>();
   const [isp, setIsp] = useState<string>();
   const [region, setRegion] = useState<string>();
-  const [coordinates, setCoordinates] = useState<LatLngExpression>([
-    37.38605, -122.08385,
-  ]);
-  // const maps = useMap();
-  // console.log("map center:", map.getCenter());
+  const [coordinates, setCoordinates] = useState<LatLngExpression>([0,0]);
 
   const [timeZone, setTimeZone] = useState<string>();
 
@@ -56,19 +50,22 @@ function IpTraker() {
         parseFloat(numeroIp?.location.lat),
         parseFloat(numeroIp?.location.lng),
       ]);
+     
     } catch (erro: any) {
       console.log(erro);
     }
   };
   function SetViewOnClick({ animateRef }: any) {
-    const map = useMapEvent("click", (e) => {
-      map.setView(coordinates, map.getZoom(), {
+    const map = useMapEvent("move", (e) => {
+      map.setView(coordinates, 13, {
         animate: animateRef.current || false,
       });
     });
 
     return null;
   }
+
+  
 
   return (
     <div style={{ position: "absolute" }}>
@@ -81,9 +78,9 @@ function IpTraker() {
             <Search
               placeholder="Search for an IP address or domain"
               onChange={(e: any) => setIp(e.target.value)}
-              enterButton={">"}
+              enterButton={<svg xmlns="http://www.w3.org/2000/svg" width="11" height="13"><path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"/></svg>}
               onSearch={() => requestApiIp()}
-              style={{ width: "50vw", borderRadius: "5px" }}
+              style={{}}
             />
             <br />
           </div>

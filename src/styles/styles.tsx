@@ -63,3 +63,5 @@ export const DivContainerMap = styled.div`
   position: sticky;
   display: grid;
 `;
+
+
