@@ -19,7 +19,6 @@ import {
   useMapEvent,
 } from "react-leaflet";
 import { LatLngExpression } from "leaflet";
-import icon from '../../assets/icon-arrow.svg'
 
 const { Search } = Input;
 
@@ -30,7 +29,8 @@ function IpTraker() {
   const [city, setCity] = useState<string>();
   const [isp, setIsp] = useState<string>();
   const [region, setRegion] = useState<string>();
-  const [coordinates, setCoordinates] = useState<LatLngExpression>([0,0]);
+  const [coordinates, setCoordinates] = useState<LatLngExpression>([-23.533773,-46.625290]);
+  const [ip2, setIp2] = useState<string>();
 
   const [timeZone, setTimeZone] = useState<string>();
 
@@ -45,7 +45,7 @@ function IpTraker() {
       setCity(numeroIp?.location.city);
       setIsp(numeroIp?.isp);
       setTimeZone(`UTC${numeroIp?.location.timezone}`);
-      setIp(numeroIp?.ip);
+      setIp2(numeroIp?.ip);
       setCoordinates([
         parseFloat(numeroIp?.location.lat),
         parseFloat(numeroIp?.location.lng),
@@ -56,7 +56,7 @@ function IpTraker() {
     }
   };
   function SetViewOnClick({ animateRef }: any) {
-    const map = useMapEvent("move", (e) => {
+    const map = useMapEvent("click", (e) => {
       map.setView(coordinates, 13, {
         animate: animateRef.current || false,
       });
@@ -100,7 +100,7 @@ function IpTraker() {
               >
                 <Col style={{ borderRight: "1px solid black" }} span={8}>
                   <p style={{ fontWeight: "400" }}>IP ADDRESS</p>
-                  <p style={{ fontWeight: "800" }}>{city && ip}</p>
+                  <p style={{ fontWeight: "800" }}>{city && ip2}</p>
                 </Col>
                 <Col style={{ borderRight: "1px solid black" }} span={8}>
                   <p style={{ fontWeight: "400" }}>LOCATION</p>
